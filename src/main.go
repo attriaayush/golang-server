@@ -12,7 +12,15 @@ func main() {
 		PORT = "3001"
 	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello World from path: %s\n", r.URL.Path)
+		fmt.Fprintf(w, "Hello World, this website is being served by GoLang")
 	})
+	http.HandleFunc("/example", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Welcome to the /example endpoint")
+	})
+
+	// Serving the static files
+	fs := http.FileServer(http.Dir("static/"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	http.ListenAndServe(":"+PORT, nil)
 }
